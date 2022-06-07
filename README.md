@@ -1,2 +1,1 @@
-# HerringGullTracking
-Tracking Herring Gull Movement on Country Island and environs 
+# Tracking Movement of Herring Gulls on Country Island and environs 

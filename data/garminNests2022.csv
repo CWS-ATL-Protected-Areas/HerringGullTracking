@@ -1,0 +1,56 @@
+﻿
+metadata
+ID,name,desc,time,keywords,minlat,minlon,maxlat,maxlon,
+1,,,2022-05-26T15:41:14Z,,45.100706974044442,-61.545191975310445,45.103149963542819,-61.542333997786045,
+
+author
+ID,name,email,
+
+copyright
+year,license,author,
+
+link
+metadataID,authorID,wptID,rteptID,trkptID,rteID,trkID,text,type,href,
+1,,,,,,,"Garmin International",,http://www.garmin.com,
+
+rte
+ID,name,cmt,desc,src,number,type,IsAutoNamed,DisplayColor,TransportationMode,TripName,Date,DayNumber,
+
+rtept
+ID,rteID,lat,lon,ele,time,magvar,geoidheight,name,cmt,desc,src,sym,type,fix,sat,hdop,vdop,pdop,ageofdgpsdata,dgpsid,DepartureTime,StopDuration,ArrivalTime,CalculationMode,ElevationMode,NamedRoad_Name,NamedRoad_Id,NamedRoad_ProductId,TransportationMode,
+
+wpt
+ID,lat,lon,ele,time,magvar,geoidheight,name,cmt,desc,src,sym,type,fix,sat,hdop,vdop,pdop,ageofdgpsdata,dgpsid,Proximity,Temperature,Depth,DisplayMode,Samples,Expiration,CreationTime,
+1,45.101028000935912,-61.543816002085805,96.339393999999999,2022-05-18T17:08:47Z,,,"Lar01",,,,"Flag, Blue","user",,,,,,,,,,,SymbolAndName,,,2022-05-18T17:08:47Z,
+2,45.101398983970284,-61.542333997786045,,2022-05-19T21:08:33Z,,,"Lar02",,,,"Flag, Blue","user",,,,,,,,,,,SymbolAndName,,,2022-05-19T21:08:33Z,
+3,45.101357996463776,-61.542662987485528,95.658248999999998,2022-05-18T15:01:48Z,,,"Lar03",,,,"Flag, Blue","user",,,,,,,,,,,SymbolAndName,,,2022-05-18T15:01:48Z,
+4,45.100954994559288,-61.544239036738873,97.515060000000005,2022-05-18T16:44:45Z,,,"Lar04",,,,"Flag, Blue","user",,,,,,,,,,,SymbolAndName,,,2022-05-18T16:44:45Z,
+5,45.103149963542819,-61.543271010741591,90.349091000000001,2022-05-18T13:19:43Z,,,"Lar05",,,,"Flag, Blue","user",,,,,,,,,,,SymbolAndName,,,2022-05-18T13:19:43Z,
+6,45.103013003244996,-61.544656036421657,83.407050999999996,2022-05-18T21:52:47Z,,,"Lar06",,,,"Flag, Blue","user",,,,,,,,,,,SymbolAndName,,,2022-05-18T21:52:47Z,
+7,45.101063959300518,-61.543623972684145,97.627028999999993,2022-05-18T20:06:07Z,,,"Lar07",,,,"Flag, Blue","user",,,,,,,,,,,SymbolAndName,,,2022-05-18T20:06:07Z,
+8,45.100706974044442,-61.543442001566291,90.209129000000004,2022-05-18T20:50:49Z,,,"Lar08",,,,"Flag, Blue","user",,,,,,,,,,,SymbolAndName,,,2022-05-18T20:50:49Z,
+9,45.101006962358952,-61.542577994987369,82.744575999999995,2022-05-18T22:16:17Z,,,"Lar09",,,,"Flag, Blue","user",,,,,,,,,,,SymbolAndName,,,2022-05-18T22:16:17Z,
+10,45.101377023383975,-61.54322599992156,4.45074,2022-05-19T20:56:09Z,,,"Lar10",,,,"Flag, Blue","user",,,,,,,,,,,SymbolAndName,,,2022-05-19T20:56:09Z,
+11,45.102726006880403,-61.545039005577564,98.933327000000006,2022-05-18T11:56:53Z,,,"Lar11",,,,"Flag, Blue","user",,,,,,,,,,,SymbolAndName,,,2022-05-18T11:56:53Z,
+12,45.101163033396006,-61.543508972972631,97.085846000000004,2022-05-18T18:16:50Z,,,"Lar12",,,,"Flag, Blue","user",,,,,,,,,,,SymbolAndName,,,2022-05-18T18:16:50Z,
+13,45.100962035357952,-61.542571038007736,82.735245000000006,2022-05-18T22:20:29Z,,,"Lar13",,,,"Flag, Blue","user",,,,,,,,,,,SymbolAndName,,,2022-05-18T22:20:29Z,
+14,45.100890034809709,-61.543957991525531,98.560096999999999,2022-05-18T16:45:12Z,,,"Lar14",,,,"Flag, Blue","user",,,,,,,,,,,SymbolAndName,,,2022-05-18T16:45:12Z,
+15,45.102915018796921,-61.545191975310445,96.955214999999995,2022-05-18T11:57:19Z,,,"Lar15",,,,"Flag, Blue","user",,,,,,,,,,,SymbolAndName,,,2022-05-18T11:57:19Z,
+
+Address
+wptID,StreetAddress1,StreetAddress2,City,State,Country,PostalCode,
+
+PhoneNumber
+wptID,Category,value,
+
+Categories
+wptID,Category,
+
+trk
+ID,name,cmt,desc,src,number,type,DisplayColor,
+
+trkseg
+ID,trkID,
+
+trkpt
+ID,trksegID,lat,lon,ele,time,magvar,geoidheight,name,cmt,desc,src,sym,type,fix,sat,hdop,vdop,pdop,ageofdgpsdata,dgpsid,Temperature,Depth,wtemp,hr,cad,

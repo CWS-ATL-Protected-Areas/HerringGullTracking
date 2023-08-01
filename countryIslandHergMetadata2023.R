@@ -18,7 +18,7 @@ library(scico)
 
 
 #Import Survey123 data----  
-survey123 <- read_csv("C:/Users/HynesD/Documents/ecotone/2023/S123_c0c2f45a74544ba48413e13fe84a92ee_CSV/GullTagging_0.csv")
+survey123 <- read_csv("data/GullTagging_0.csv")
 
 #Sarah Gutowsky's written field notes
 #Original images at "https://007gc-my.sharepoint.com/personal/sarah_neima_ec_gc_ca/Documents/PA%20Monitoring%20Team/Data/countryIslandGullTracking/NestNotes_20230524_091533.jpg"
@@ -150,7 +150,7 @@ metaData2023 <- survey123 %>%
 #Join nest locations from '22 and '23----
 #Code could be cleaned up a bit
 #read 2023 data 
-nests2023 <- st_read("C:/Users/HynesD/Documents/ecotone/2023/garminNests2023.kml") %>% st_zm() %>%
+nests2023 <- st_read("data/garminNests2023.kml") %>% st_zm() %>%
   filter(str_detect(Name, "E")) %>%
   slice(-c(1, 14,15)) %>% 
   mutate(Longitude = sf::st_coordinates(.)[,1], Latitude = sf::st_coordinates(.)[,2]) %>%
@@ -158,7 +158,7 @@ nests2023 <- st_read("C:/Users/HynesD/Documents/ecotone/2023/garminNests2023.kml
   #st_drop_geometry()
 
 #read 2023 data 
-garmin2022 <- read_csv("C://Users/HynesD/Documents/ecotone/gsmMetadata/garminNests2022.csv", skip = 22, n_max = 15)
+garmin2022 <- read_csv("data/garminNests2022.csv", skip = 22, n_max = 15)
 nests2022 <-
   garmin2022 %>% st_as_sf(coords = c("lon", "lat"),
                       crs = 4326,

@@ -38,7 +38,28 @@ writtenNotes <- tribble(
   "SOM06", "destroyed", 2, "2023-05-10",
   "SOM06", "destroyed", 3, "2023-05-23",
   "SOM10", "intact", 2, "2023-05-10",
-  "SOM10", "intact", 3, "2023-05-23")
+  "SOM10", "intact", 3, "2023-05-23",
+  "SOM15", "destroyed", 2, "2023-05-10",
+  "SOM15", "destroyed", 3, "2023-05-23",
+  "SOM02", "intact", 3, "2023-05-23",
+  "SOM13", "intact", 1, "2023-05-10",
+  "SOM13", "intact", 3, "2023-05-23",
+  "SOM12", "destroyed", 3, "2023-05-10",
+  "SOM12", "destroyed", 3, "2023-05-23",
+  "SOM14", "destroyed", 2, "2023-05-10",
+  "SOM14", "destroyed", 3, "2023-05-23",
+  "SOM04", "intact", 3, "2023-05-23",
+  "SOM07", "destroyed", 2, "2023-05-10",
+  "SOM07", "destroyed", 3, "2023-05-23",
+  "SOM05", "intact", 1, "2023-05-10",
+  "SOM05", "intact", 3, "2023-05-23",
+  "SOM09", "destroyed", 1, "2023-05-10",
+  "SOM09", "destroyed", 4, "2023-05-23",
+  "SOM03", "intact", 2, "2023-05-10",
+  "SOM03", "intact", 3, "2023-05-23",
+  "SOM01", "destroyed", 2, "2023-05-10",
+  "SOM01", "destroyed", 3, "2023-05-23"
+  )
   
 #Clean up Survey123 data----
 
@@ -115,12 +136,11 @@ metaData2023 <- survey123 %>%
       #TRUE ~ NA_character_
     )
   ) %>% 
-#To do: code assistants (needs clean up)----
   mutate(#Recode assistants with names
     BandAssistants = case_when(
       `Assistants` == 1 ~ "Karel Allard", 
-      (`Assistants` == 2 & `DateTimeTaggedUTC` > as.POSIXct("2023-01-01", tz = "UTC")) ~ "Lindsay Colyn",
-      (`Assistants` == 2 & `DateTimeTaggedUTC` < as.POSIXct("2023-01-01", tz = "UTC")) ~ "Megan Boucher",
+      (`Assistants` == 2 & `DateTimeTaggedUTC` > as.POSIXct("2023-01-01")) ~ "Lindsay Colyn",
+      (`Assistants` == 2 & `DateTimeTaggedUTC` < as.POSIXct("2023-01-01")) ~ "Megan Boucher",
       `Assistants` == 3 ~ "Sarah Gutowsky",
       `Assistants` == 4 ~ "Doug Hynes",
       `Assistants` == 5 ~ "Mark Mallory",
@@ -135,8 +155,17 @@ metaData2023 <- survey123 %>%
       #TRUE ~ NA_character_
     )
   ) %>%
+  mutate(clutchSizeOnTagDate = coalesce(`Clutch size`, `Clutch size 23-May`)) %>% #add clutch size on date of tagging
+  mutate(NestTreatment = case_when(#recode nest treatment from 2022
+    (`Nest treatment` == 1 & `DateTimeTaggedUTC` < as.POSIXct("2023-01-01")) ~ "Destroyed",
+    (`Nest treatment` == 2 & `DateTimeTaggedUTC` < as.POSIXct("2023-01-01")) ~ "Destroyed", # fix error in data entry
+    (is.na(`Nest treatment`) & `DateTimeTaggedUTC` < as.POSIXct("2023-01-01")) ~ "Intact",
+    TRUE ~ NA_character_
+    )
+  ) %>%
 
-#To do: add clutch size and inside/outside colony variable ----
+#To do: inside/outside colony and nest treatment variables ----
+#To do add clutch statuses----
 
   select(DateTimeTaggedUTC, #Select variables needed; edit as necessary 
          Site,
@@ -168,7 +197,6 @@ metaData2023 <- survey123 %>%
   #mutate(BandNumber = str_replace_all(BandNumber, "-", ""))
   #mutate(ClutchStatus19May = fct_recode(ClutchStatus19May, `Nest kept intact` = "Intact", `Nest destroyed` = "Destroyed"))
 
-#To do add clutch statuses----
 
 #Join nest locations from '22 and '23----
 #Code could be cleaned up a bit

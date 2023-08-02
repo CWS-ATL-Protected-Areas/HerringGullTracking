@@ -20,45 +20,50 @@ library(scico)
 #Import Survey123 data----  
 survey123 <- read_csv("data/GullTagging_0.csv")
 
+#metadata from 2022 to get correct nest treatments
+data2022 <-read_csv("data/gullMetadata.csv") %>%
+  mutate(BiologgerID = gsub("I","",BiologgerID))#standardize formatting
+
+
 #Sarah Gutowsky's written field notes
 #Original images at "https://007gc-my.sharepoint.com/personal/sarah_neima_ec_gc_ca/Documents/PA%20Monitoring%20Team/Data/countryIslandGullTracking/NestNotes_20230524_091533.jpg"
 
 writtenNotes <- tribble(
   ~BiologgerID, ~NestTreatment, ~ClutchSize, ~ClutchSizeDate, 
-  "LAR13", "intact", 2, "2023-05-10",
-  "LAR13", "intact", 3, "2023-05-22",
-  "LAR02", "intact", 3, "2023-05-19",
-  "LAR02", "intact", 3, "2023-05-23",
-  "SOM08", "intact", 3, "2023-05-19",
-  "SOM08", "intact", 3, "2023-05-23",
-  "LAR04", "destroyed", 3, "2023-05-20",
-  "LAR04", "destroyed", 2, "2023-05-10",
-  "SOM11", "intact", 1, "2023-05-10",
-  "SOM11", "intact", 3, "2023-05-23",
-  "SOM06", "destroyed", 2, "2023-05-10",
-  "SOM06", "destroyed", 3, "2023-05-23",
-  "SOM10", "intact", 2, "2023-05-10",
-  "SOM10", "intact", 3, "2023-05-23",
-  "SOM15", "destroyed", 2, "2023-05-10",
-  "SOM15", "destroyed", 3, "2023-05-23",
-  "SOM02", "intact", 3, "2023-05-23",
-  "SOM13", "intact", 1, "2023-05-10",
-  "SOM13", "intact", 3, "2023-05-23",
-  "SOM12", "destroyed", 3, "2023-05-10",
-  "SOM12", "destroyed", 3, "2023-05-23",
-  "SOM14", "destroyed", 2, "2023-05-10",
-  "SOM14", "destroyed", 3, "2023-05-23",
-  "SOM04", "intact", 3, "2023-05-23",
-  "SOM07", "destroyed", 2, "2023-05-10",
-  "SOM07", "destroyed", 3, "2023-05-23",
-  "SOM05", "intact", 1, "2023-05-10",
-  "SOM05", "intact", 3, "2023-05-23",
-  "SOM09", "destroyed", 1, "2023-05-10",
-  "SOM09", "destroyed", 4, "2023-05-23",
-  "SOM03", "intact", 2, "2023-05-10",
-  "SOM03", "intact", 3, "2023-05-23",
-  "SOM01", "destroyed", 2, "2023-05-10",
-  "SOM01", "destroyed", 3, "2023-05-23"
+  "LAR13", "Intact", 2, "2023-05-10",
+  "LAR13", "Intact", 3, "2023-05-22",
+  "LAR02", "Intact", 3, "2023-05-19",
+  "LAR02", "Intact", 3, "2023-05-23",
+  "SOM08", "Intact", 3, "2023-05-19",
+  "SOM08", "Intact", 3, "2023-05-23",
+  "LAR04", "Destroyed", 3, "2023-05-20",
+  "LAR04", "Destroyed", 2, "2023-05-10",
+  "SOM11", "Intact", 1, "2023-05-10",
+  "SOM11", "Intact", 3, "2023-05-23",
+  "SOM06", "Destroyed", 2, "2023-05-10",
+  "SOM06", "Destroyed", 3, "2023-05-23",
+  "SOM10", "Intact", 2, "2023-05-10",
+  "SOM10", "Intact", 3, "2023-05-23",
+  "SOM15", "Destroyed", 2, "2023-05-10",
+  "SOM15", "Destroyed", 3, "2023-05-23",
+  "SOM02", "Intact", 3, "2023-05-23",
+  "SOM13", "Intact", 1, "2023-05-10",
+  "SOM13", "Intact", 3, "2023-05-23",
+  "SOM12", "Destroyed", 3, "2023-05-10",
+  "SOM12", "Destroyed", 3, "2023-05-23",
+  "SOM14", "Destroyed", 2, "2023-05-10",
+  "SOM14", "Destroyed", 3, "2023-05-23",
+  "SOM04", "Intact", 3, "2023-05-23",
+  "SOM07", "Destroyed", 2, "2023-05-10",
+  "SOM07", "Destroyed", 3, "2023-05-23",
+  "SOM05", "Intact", 1, "2023-05-10",
+  "SOM05", "Intact", 3, "2023-05-23",
+  "SOM09", "Destroyed", 1, "2023-05-10",
+  "SOM09", "Destroyed", 4, "2023-05-23",
+  "SOM03", "Intact", 2, "2023-05-10",
+  "SOM03", "Intact", 3, "2023-05-23",
+  "SOM01", "Destroyed", 2, "2023-05-10",
+  "SOM01", "Destroyed", 3, "2023-05-23"
   )
   
 #Clean up Survey123 data----
@@ -156,26 +161,34 @@ metaData2023 <- survey123 %>%
     )
   ) %>%
   mutate(clutchSizeOnTagDate = coalesce(`Clutch size`, `Clutch size 23-May`)) %>% #add clutch size on date of tagging
-  mutate(NestTreatment = case_when(#recode nest treatment from 2022
-    (`Nest treatment` == 1 & `DateTimeTaggedUTC` < as.POSIXct("2023-01-01")) ~ "Destroyed",
-    (`Nest treatment` == 2 & `DateTimeTaggedUTC` < as.POSIXct("2023-01-01")) ~ "Destroyed", # fix error in data entry
-    (is.na(`Nest treatment`) & `DateTimeTaggedUTC` < as.POSIXct("2023-01-01")) ~ "Intact",
-    TRUE ~ NA_character_
+  full_join(select(data2022, ClutchStatus19May, BiologgerID), 
+            by = c("BiologgerID" = "BiologgerID")) %>% #bring in 2022 nest treatment
+  full_join(select(distinct(writtenNotes, BiologgerID, .keep_all = TRUE), NestTreatment, BiologgerID), 
+            by = c("BiologgerID" = "BiologgerID")) %>% #bring in 2023 nest treatment
+  rename("NestTreatment2022" = "ClutchStatus19May",
+         "NestTreatment2023" = "NestTreatment") %>%
+  mutate(nestRelativeToColony = case_when(
+    `Nest relative to colony` == 1 ~ "inside",
+    `Nest relative to colony` == 2 ~ "outside",
+    `BiologgerID` %in% c("LAR15","LAR11","LAR06","LAR05") ~"outside",
+    is.na(`BiologgerID`) ~ NA_character_,
+    TRUE ~ "inside"
     )
   ) %>%
-
-#To do: inside/outside colony and nest treatment variables ----
-#To do add clutch statuses----
-
+  
   select(DateTimeTaggedUTC, #Select variables needed; edit as necessary 
          Site,
          Species,
          BandNumber = Band,
          FieldReadableCode = Code,
-         FdReadCodeColour = "Code colour",
          FdReadBkGrdColour = "Background colour",
+         FdReadCodeColour = "Code colour",
          BiologgerID,
          NestID = "Nest ID",
+         clutchSizeOnTagDate,
+         NestTreatment2022,
+         NestTreatment2023,
+         nestRelativeToColony,
          TotalHead = Head,
          Culmen,
          BillDepth = `Bill Depth`,
@@ -202,32 +215,35 @@ metaData2023 <- survey123 %>%
 #Code could be cleaned up a bit
 #read 2023 data 
 nests2023 <- st_read("data/garminNests2023.kml") %>% st_zm() %>%
-  filter(str_detect(Name, "E")) %>%
-  slice(-c(1, 14,15)) %>% 
+  filter(str_detect(Name, "E")) %>% #subset only nests from 2023
+  slice(-c(1, 14,15)) %>% #remove nest EMF and incorrect points for SOM14 & 15 (taken at camp)
   mutate(Longitude = sf::st_coordinates(.)[,1], Latitude = sf::st_coordinates(.)[,2]) %>%
-  select(NestID = Name, Latitude, Longitude)
-  #st_drop_geometry()
+  select(NestID = Name, Latitude, Longitude) %>%
+  st_drop_geometry()
 
-#read 2023 data 
+#read 2022 data 
 garmin2022 <- read_csv("data/garminNests2022.csv", skip = 22, n_max = 15)
 nests2022 <-
   garmin2022 %>% st_as_sf(coords = c("lon", "lat"),
                       crs = 4326,
                       remove = FALSE) %>% 
   #mutate(BiologgerID = stri_sub_replace(name, 4, 3, value = "I")) %>% #clean up bird IDs (i.e., BiologgerIDs)
-  mutate(BiologgerID = str_to_upper(name)) %>%
+  mutate(BiologgerID = str_to_upper(name)) %>% #standarize text formatting
   select(BiologgerID, Latitude = lat, Longitude = lon) %>%
   st_drop_geometry()
 
 #Join everything
 metaData2023R <- metaData2023 %>% 
-  left_join(nests2023) %>%
+  left_join(nests2023, by = "NestID") %>%
   left_join(nests2022, by = "BiologgerID") %>%
   unite("Latitude", "Latitude.x", "Latitude.y", na.rm = TRUE) %>%
   unite("Longitude", "Longitude.x", "Longitude.y", na.rm = TRUE) %>%
   mutate(Longitude = as.numeric(Longitude)) %>%
   mutate(Latitude = as.numeric(Latitude)) 
   #st_as_sf(coords = c("Longitude", "Latitude"), crs = 4326, remove = FALSE)
+
+
+
 
 #Sex birds with discriminant function----
 #Robertson et al. 2016 URL: https://doi.org/10.1675/063.039.sp125
@@ -312,3 +328,6 @@ ggplot(data = dataR2, aes(Score, value, colour = Sex)) +
 ggplot(data = dataR, aes(Tarsus, Wing, colour = Score >0, label = Sex)) +
    geom_point() +
    geom_label()
+
+
+#To do: create nest history table----

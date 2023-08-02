@@ -248,9 +248,18 @@ metaData2023R <- metaData2023 %>%
 #Sex birds with discriminant function----
 #Robertson et al. 2016 URL: https://doi.org/10.1675/063.039.sp125
 
-data <- metaData2023 %>% filter(!Species == "Great Black-backed Gull") %>%
+data <- metaData2023R %>% filter(!Species == "Great Black-backed Gull") %>%
   mutate(Score = 2.893 * BillDepth + 0.892 * TotalHead + 0.136 * Wing - 232) %>%
   mutate(Sex = case_when(Score > 0 ~ "Male", Score < 0 ~ "Female"))
+
+
+
+
+#Export clean metadata----
+write.csv(data, "CountryIslandGullMetadata_clean2023-08-02.csv", row.names = FALSE)
+
+
+
 
 #Plot DFs----
 

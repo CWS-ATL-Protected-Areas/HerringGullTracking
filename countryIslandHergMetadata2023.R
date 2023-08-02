@@ -115,7 +115,29 @@ metaData2023 <- survey123 %>%
       #TRUE ~ NA_character_
     )
   ) %>% 
-#To do: code assistants----
+#To do: code assistants (needs clean up)----
+  mutate(#Recode assistants with names
+    BandAssistants = case_when(
+      `Assistants` == 1 ~ "Karel Allard", 
+      (`Assistants` == 2 & `DateTimeTaggedUTC` > as.POSIXct("2023-01-01", tz = "UTC")) ~ "Lindsay Colyn",
+      (`Assistants` == 2 & `DateTimeTaggedUTC` < as.POSIXct("2023-01-01", tz = "UTC")) ~ "Megan Boucher",
+      `Assistants` == 3 ~ "Sarah Gutowsky",
+      `Assistants` == 4 ~ "Doug Hynes",
+      `Assistants` == 5 ~ "Mark Mallory",
+      `Assistants` == 6 ~ "Sarah Neima", 
+      `Assistants` == 7 ~ "Other",
+      `Assistants` == 234 ~ "Megan Boucher, Sarah Gutowsky, Doug Hynes", # possible to clean this up to replace multiple within a single string?
+      `Assistants` == 75 ~ "Other, Mark Mallory",
+      `Assistants` == 24 ~ "Megan Boucher, Doug Hynes",
+      `Assistants` == 231 ~ "Megan Boucher, Sarah Gutowsky, Karel Allard",
+      `Assistants` == 23 ~ "Megan Boucher, Sarah Gutowsky",
+      `Assistants` == 35 ~ "Sarah Gutowsky, Mark Mallory",
+      #TRUE ~ NA_character_
+    )
+  ) %>%
+
+#To do: add clutch size and inside/outside colony variable ----
+
   select(DateTimeTaggedUTC, #Select variables needed; edit as necessary 
          Site,
          Species,
@@ -135,6 +157,7 @@ metaData2023 <- survey123 %>%
          #WeighedWithKiteM,
          #KiteMWeightGrams,
          Bander,
+         BandAssistants,
          Comments = Notes)
 #not run
   #mutate(P7 = case_when(is.na(P7) ~ 5, TRUE ~ P7)) 

@@ -34,8 +34,10 @@ writtenNotes <- tribble(
   "LAR13", "Intact", 3, "2023-05-22",
   "LAR02", "Intact", 3, "2023-05-19",
   "LAR02", "Intact", 3, "2023-05-23",
+  "LAR02", "Destroyed", 1, "2023-06-08",
   "SOM08", "Intact", 3, "2023-05-19",
   "SOM08", "Intact", 3, "2023-05-23",
+  "SOM08", "Destroyed", 1, "2023-06-08",
   "LAR04", "Destroyed", 3, "2023-05-20",
   "LAR04", "Destroyed", 2, "2023-05-10",
   "SOM11", "Intact", 1, "2023-05-10",
@@ -65,6 +67,10 @@ writtenNotes <- tribble(
   "SOM01", "Destroyed", 2, "2023-05-10",
   "SOM01", "Destroyed", 3, "2023-05-23"
   )
+
+treatment2023 <- writtenNotes %>%
+  group_by(BiologgerID) %>%
+  filter(ClutchSizeDate == max(ClutchSizeDate))
   
 #Clean up Survey123 data----
 
@@ -163,7 +169,7 @@ metaData2023 <- survey123 %>%
   mutate(clutchSizeOnTagDate = coalesce(`Clutch size`, `Clutch size 23-May`)) %>% #add clutch size on date of tagging
   full_join(select(data2022, ClutchStatus19May, BiologgerID), 
             by = c("BiologgerID" = "BiologgerID")) %>% #bring in 2022 nest treatment
-  full_join(select(distinct(writtenNotes, BiologgerID, .keep_all = TRUE), NestTreatment, BiologgerID), 
+  full_join(select(treatment2023, NestTreatment, BiologgerID), 
             by = c("BiologgerID" = "BiologgerID")) %>% #bring in 2023 nest treatment
   rename("NestTreatment2022" = "ClutchStatus19May",
          "NestTreatment2023" = "NestTreatment") %>%
@@ -256,7 +262,7 @@ data <- metaData2023R %>% filter(!Species == "Great Black-backed Gull") %>%
 
 
 #Export clean metadata----
-write.csv(data, "CountryIslandGullMetadata_clean2023-08-02.csv", row.names = FALSE)
+write.csv(data, "CountryIslandGullMetadata_clean2023-08-03.csv", row.names = FALSE)
 
 
 
